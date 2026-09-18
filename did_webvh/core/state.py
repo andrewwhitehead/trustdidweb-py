@@ -46,7 +46,6 @@ class DocumentMetadata:
     updated: datetime
     scid: str
     version_id: str
-    version_number: int
     version_time: datetime
     deactivated: bool = False
     portable: bool = False
@@ -56,6 +55,10 @@ class DocumentMetadata:
 
     def serialize(self) -> dict:
         """Serialize this value to a JSON-compatible dictionary."""
+        witness = deepcopy(self.witness) if self.witness else {}
+        if "threshold" in witness:
+            # a string, because DID metadata must not contain integers
+            witness["threshold"] = str(witness["threshold"])
         return {
             "created": iso_format_datetime(self.created),
             "updated": iso_format_datetime(self.updated),
@@ -64,10 +67,9 @@ class DocumentMetadata:
             "scid": self.scid,
             "ttl": self.ttl,
             "versionId": self.version_id,
-            "versionNumber": self.version_number,
             "versionTime": iso_format_datetime(self.version_time),
-            "watchers": self.watchers,
-            "witness": self.witness,
+            "watchers": self.watchers if self.watchers is not None else [],
+            "witness": witness,
         }
 
 

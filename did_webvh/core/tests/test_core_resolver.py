@@ -113,7 +113,7 @@ async def test_resolve_history():
     )
     assert isinstance(res, ResolutionResult)
     assert isinstance(res.document, dict)
-    assert res.document_metadata["versionNumber"] == 2
+    assert res.document_metadata["versionId"].startswith("2-")
 
     res = await resolver.resolve("bad-docid", history)
     assert res.document is None
@@ -227,7 +227,7 @@ async def test_resolve_history_accepts_version_time_within_skew(
         "docid-QmadwVpf5ccxz7bGxaweiHSxFcN1MFG415GUpbN9Cnm1hH", history
     )
     assert res.document is not None, res.resolution_metadata
-    assert res.document_metadata["versionNumber"] == 2
+    assert res.document_metadata["versionId"].startswith("2-")
     assert res.document_metadata["versionTime"] == "2099-01-01T00:00:00Z"
 
 
@@ -270,7 +270,7 @@ async def test_resolve_history_future_version_time_not_enforced():
         "docid-QmadwVpf5ccxz7bGxaweiHSxFcN1MFG415GUpbN9Cnm1hH", history
     )
     assert res.document is not None, res.resolution_metadata
-    assert res.document_metadata["versionNumber"] == 2
+    assert res.document_metadata["versionId"].startswith("2-")
 
 
 async def test_resolve_history_failed_request():

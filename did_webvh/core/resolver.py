@@ -526,7 +526,6 @@ class DidResolver:
             scid=found.scid,
             ttl=str(found.ttl),
             version_id=found.version_id,
-            version_number=found.version_number,
             version_time=found.timestamp,
             watchers=found.watchers,
             witness=found.witness,
